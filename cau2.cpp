@@ -2,7 +2,7 @@
 #include<vector>
 #include<algorithm>
 using namespace std;
-vector<int> ans;
+vector<vector<int>> ans;
 
 struct TreeNode{
     int val;
@@ -30,10 +30,20 @@ TreeNode* insertion(TreeNode* &root, int d){
 }
 
 void findWay(TreeNode*root, vector<int> c, int x){
-    if(!root){
-        for(int i=0; i<c.size(); i++){
-            if(c[i]==x) ans=c;
+    if(!root) return;
+    if(!root->left and !root->right)
+    {
+        c.push_back(root->val);
+        bool flag = false;
+        for(int i=0; i<c.size(); i++)
+        {
+            if(c[i]==x)
+            {
+                flag = true;
+                break;
+            }
         }
+        if(flag) ans.push_back(c);
         return;
     }
     c.push_back(root->val);
@@ -55,8 +65,11 @@ int main(){
     cin >> x;
     vector<int> p;
     findWay(root, p, x);
-    for(int i=0; i<ans.size(); i++){
-        cout<< ans[i] << " ";
+    for(int i=0; i<ans.size(); i++)
+    {
+        cout << "Path "<< i+1<<": ";
+        for(int j = 0; j < ans[i].size();j++) cout << ans[i][j] << " ";
+        cout << endl;
     }
     cout << endl;
     delete root;
