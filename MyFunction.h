@@ -5,9 +5,18 @@
 #include <unordered_map>
 using namespace std;
 
+class Team
+{
+public:
+    string name;
+    int MP, W, D, L, GF, GA, GD, Pts;
+    Team();
+    void output();
+    ~Team();
+};
 class Match
 {
-    string home_team, away_team;
+    Team home_team, away_team;
     vector<pair<string, bool>> scores; // bool: 0 home, 1 away
     pair<int, int> result;
 
@@ -17,6 +26,7 @@ public:
     pair<string, string> getName();
     void load(ifstream &fin);
     pair<int, int> Result();
+    pair<Team, Team> getTeam();
     void output();
 };
 
@@ -25,7 +35,7 @@ class League
     string name;
     vector<Match> matches;
     unordered_map<string, int> teams;
-    vector<string> teams_rank;
+    vector<Team> teams_rank; // fix
 
 public:
     League();
@@ -33,4 +43,5 @@ public:
     ~League();
     void load(string file);
     void output();
+    void standing();
 };
