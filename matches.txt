@@ -1,0 +1,33 @@
+Premier League
+1
+Arsenal 
+Man United
+Rooney 1
+
+2
+Man City 
+Man United
+Rooney 1
+
+3
+Man City
+Arsenal 
+Haaland 0
+Haaland 0
+
+4
+Arsenal 
+Chelsea
+Lukaku 1
+Jesus 0
+
+5
+Chelsea 
+Man United
+Rooney 1
+Chicharito 1
+
+6
+Chelsea 
+Man City
+Balotelli 1
