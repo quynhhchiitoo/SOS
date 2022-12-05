@@ -10,16 +10,31 @@ void Team::output()
     cout << name << "\t\t"
          << "\t" << MP << "\t" << W << "\t" << D << "\t" << L << "\t" << GF << "\t" << GA << "\t" << GD << "\t" << Pts << endl;
 }
-Team::~Team()
+Team Team::operator+(const Team &team)
 {
+    Team res;
+    res.name = name;
+    res.MP = MP + team.MP;
+    res.W = W + team.W;
+    res.D = D + team.D;
+    res.L = L + team.L;
+    res.GF = GF + team.GF;
+    res.GA = GA + team.GA;
+    res.GD = GD + team.GD;
+    res.Pts = MP + team.Pts;
+    return res;
 }
+Team::~Team() {}
+bool Team::compare(const Team &team) { return name == team.name; }
 
 Match::Match() : home_team(Team()), away_team(Team()), result({0, 0}) {}
 Match::~Match() {}
 pair<string, string> Match::getName() { return {home_team.name, away_team.name}; }
+pair<Team, Team> Match::getTeam() { return {home_team, away_team}; }
 pair<int, int> Match::Result() { return result; }
 void Match::load(ifstream &fin)
 {
+    fflush(stdin);
     string tmp = "";
     int cnt = 0;
     while (1)
@@ -28,9 +43,15 @@ void Match::load(ifstream &fin)
         if (tmp == "")
             break;
         if (cnt == 0)
+        {
             home_team.name = tmp;
+            // cout << tmp << " " << tmp.length() << endl;
+        }
         else if (cnt == 1)
+        {
             away_team.name = tmp;
+            // cout << tmp << " " << tmp.length() << endl;
+        }
         else
         {
             int goal = tmp[tmp.length() - 1] - '0';
@@ -48,14 +69,14 @@ void Match::load(ifstream &fin)
         home_team.MP++;
         home_team.GF += result.first;
         home_team.W++;
-        home_team.GA += result.second;
+        home_team.GA -= result.second;
         home_team.GD = home_team.GF - home_team.GA;
         home_team.Pts += 3;
 
         away_team.MP++;
         away_team.GF += result.second;
-        away_team.L--;
-        away_team.GA += result.first;
+        away_team.L++;
+        away_team.GA -= result.first;
         away_team.GD = away_team.GF - away_team.GA;
     }
     else if (result.first == result.second) // home team win
@@ -66,9 +87,9 @@ void Match::load(ifstream &fin)
         away_team.D++;
 
         home_team.GF += result.first;
-        home_team.GA += result.second;
+        home_team.GA -= result.second;
         away_team.GF += result.second;
-        away_team.GA += result.first;
+        away_team.GA -= result.first;
 
         home_team.Pts += 1;
         away_team.Pts += 1;
@@ -78,14 +99,14 @@ void Match::load(ifstream &fin)
         away_team.MP++;
         away_team.GF += result.second;
         away_team.W++;
-        away_team.GA += result.first;
+        away_team.GA -= result.first;
         away_team.GD = away_team.GF - away_team.GA;
         away_team.Pts += 3;
 
         home_team.MP++;
         home_team.GF += result.first;
-        home_team.L--;
-        home_team.GA += result.second;
+        home_team.L++;
+        home_team.GA -= result.second;
         home_team.GD = home_team.GF - home_team.GA;
     }
     return;
@@ -119,18 +140,37 @@ void League::load(string file)
             string at = match.getName().second;
 
             Team home, away;
-            home.name = ht;
-            away.name = at;
+            home = match.getTeam().first;
+            away = match.getTeam().second;
 
             if (!teams[ht])
             {
                 teams_rank.push_back(home);
                 teams[ht] = teams_rank.size();
             }
+            else
+            {
+                for (int i = 0; i < teams_rank.size(); i++)
+                    if (teams_rank[i].compare(home))
+                    {
+                        teams_rank[i] = teams_rank[i] + home;
+                        break;
+                    }
+            }
+
             if (!teams[at])
             {
                 teams_rank.push_back(away);
                 teams[at] = teams_rank.size();
+            }
+            else
+            {
+                for (int i = 0; i < teams_rank.size(); i++)
+                    if (teams_rank[i].compare(away))
+                    {
+                        teams_rank[i] = teams_rank[i] + away;
+                        break;
+                    }
             }
         }
     }

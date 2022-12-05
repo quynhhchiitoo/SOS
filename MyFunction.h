@@ -12,6 +12,8 @@ public:
     int MP, W, D, L, GF, GA, GD, Pts;
     Team();
     void output();
+    bool compare(const Team &team);
+    Team operator+(const Team &team);
     ~Team();
 };
 class Match
