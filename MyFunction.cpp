@@ -7,6 +7,7 @@ Team::Team()
 }
 void Team::output()
 {
+    Pts = W * 3 + D * 1 + L * 0;
     cout << name << "\t\t"
          << "\t" << MP << "\t" << W << "\t" << D << "\t" << L << "\t" << GF << "\t" << GA << "\t" << GD << "\t" << Pts << endl;
 }
@@ -27,12 +28,12 @@ Team Team::operator+(const Team &team)
 
 bool Team::operator>(const Team &team)
 {
-    if (Pts > team.Pts)
-        return true;
-    if (GD > team.GD)
-        return true;
-    if (GF > team.GF)
-        return true;
+    if (Pts != team.Pts)
+        return Pts > team.Pts;
+    if (GD != team.GD)
+        return GD > team.GD;
+    if (GF != team.GF)
+        return GF > team.GF;
     return name < team.name;
 }
 Team::~Team() {}
@@ -223,7 +224,7 @@ void League::sort()
     {
         for (int j = i + 1; j < teams_rank.size(); j++)
         {
-            if (teams_rank[i] > teams_rank[j])
+            if (teams_rank[j] > teams_rank[i])
             {
                 Team temp = teams_rank[j];
                 teams_rank[j] = teams_rank[i];
