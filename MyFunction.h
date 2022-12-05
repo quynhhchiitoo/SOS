@@ -14,6 +14,7 @@ public:
     void output();
     bool compare(const Team &team);
     Team operator+(const Team &team);
+    bool operator>(const Team &team);
     ~Team();
 };
 class Match
@@ -46,4 +47,5 @@ public:
     void load(string file);
     void output();
     void standing();
+    void sort();
 };

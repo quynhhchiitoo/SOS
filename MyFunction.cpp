@@ -24,6 +24,17 @@ Team Team::operator+(const Team &team)
     res.Pts = MP + team.Pts;
     return res;
 }
+
+bool Team::operator>(const Team &team)
+{
+    if (Pts > team.Pts)
+        return true;
+    if (GD > team.GD)
+        return true;
+    if (GF > team.GF)
+        return true;
+    return name < team.name;
+}
 Team::~Team() {}
 bool Team::compare(const Team &team) { return name == team.name; }
 
@@ -204,4 +215,21 @@ void League::standing()
              << i + 1 << ".\n";
         teams_rank[i].output();
     }
+}
+
+void League::sort()
+{
+    for (int i = 0; i < teams_rank.size(); i++)
+    {
+        for (int j = i + 1; j < teams_rank.size(); j++)
+        {
+            if (teams_rank[i] > teams_rank[j])
+            {
+                Team temp = teams_rank[j];
+                teams_rank[j] = teams_rank[i];
+                teams_rank[i] = temp;
+            }
+        }
+    }
+    return;
 }

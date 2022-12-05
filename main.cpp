@@ -6,6 +6,7 @@ int main()
     PL.load("matches.txt");
     PL.output();
 
+    PL.sort();
     PL.standing();
     return 0;
 }
